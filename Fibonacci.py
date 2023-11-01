@@ -49,6 +49,7 @@ This code respect the PEP8 style guide for Python code.
 import math
 import time
 from os import name, system
+import tracemalloc
 
 #====================================================================================================
 # IMPORT CUSTOM MODULES AND PACKAGES WITH INSTALLATION INSTRUCTIONS
@@ -58,7 +59,6 @@ import numpy as np # pip install numpy or conda install numpy
 #====================================================================================================
 # FUNCTIONS DEFINITIONS
 #====================================================================================================
-
 # Define a function to clear the terminal prompt as a function of the OS
 def clear():
     """ Clears the terminal screen. 
@@ -160,6 +160,9 @@ def main():
         clear()
         a = input('Enter a function you want to run\n    Enter 1 for finding the nth Fibnacci number\n    Enter 2 for finding the closest Fibonacci number\n')
 
+        #____________________________________________________________________________________________________
+        # OPTION 1: Find the nth Fibonacci number
+        #____________________________________________________________________________________________________
         # If the user enters 1, the program will find the nth Fibonacci number
         if a == '1':
             clear()
@@ -178,23 +181,57 @@ def main():
                 end = time.time()
                 times.append(end - start)
             
-            # Print the result of the speed test
+
+            # Run the function again for memory test and to get the results
+            tracemalloc.start()
+            Fs = get_fibonacci(n)
+            snapshot = tracemalloc.take_snapshot()
+            top_stats = snapshot.statistics('traceback')
+            
+            # Print the result of the speed test and memory test
             print(f"\n================================================================")
             print(f"ELAPSED TIME:\nMEAN:{np.mean(times)} +/- {np.std(times)} SECONDS")
+            print(f"MAX MEMORY USAGE:\n{top_stats[-1]}")
             print(f"================================================================\n")
-
-            # Run the function again to get the results
-            Fs = get_fibonacci(n)
             
             # Formating the output of the function for display to the terminal
-            n.insert(-1, 'and')
-            Fs.insert(-1, 'and')
-            numbers = ' '.join([str(i) for i in n])
-            Fs = ' '.join([str(i) for i in Fs])
+            # and dealing with the english language exceptions (st,nd,rd)
+            if len(n) > 1:
+                n.insert(-1, 'and')
+                Fs.insert(-1, 'and')
+                numbers = ' '.join([str(i) for i in n])
+                Fs = ' '.join([str(i) for i in Fs])
+                conjunction = 'are'
 
+                if (n[-1] - 1) % 10 == 0:
+                    th = 'st'
+                elif (n[-1] - 2) % 10 == 0:
+                    th = 'nd'
+                elif (n[-1] - 3) % 10 == 0:
+                    th = 'rd'
+                else:
+                    th = 'th'
+            
+            else:
+                numbers = n[0]
+                Fs = Fs[0]
+                conjunction = 'is'
+
+                if numbers == 1:
+                    th = 'st'
+                elif numbers == 2:
+                    th = 'nd'
+                elif numbers == 3:
+                    th = 'rd'
+                else:
+                    th = 'th'
+            
             # Printing the results to the terminal
-            print(f"The {numbers} Fibonacci numbers are {Fs}.")
-
+            print(f"The {numbers}{th} Fibonacci numbers {conjunction} {Fs}.")
+        
+        #____________________________________________________________________________________________________
+        # OPTION 2: Find the closest Fibonacci number to a given number
+        #____________________________________________________________________________________________________
         # If the user enters 2, the program will find the closest Fibonacci number to a given number
         elif a == '2':
             clear()
@@ -209,11 +246,18 @@ def main():
                 end = time.time()
                 times.append(end - start)
             
+            # Runing the function again for memory test and getting the results
+            tracemalloc.start()
+            F, lower,upper = find_n(n)
+            snapshot = tracemalloc.take_snapshot()
+            top_stats = snapshot.statistics('lineno')
+
             # Print the result of the speed test
             print(f"\n================================================================")
             print(f"ELAPSED TIME:\nMEAN:{np.mean(times)} +/- {np.std(times)} SECONDS")
+            print(f"MAX MEMORY USAGE:\n{top_stats[-1]}")
             print(f"================================================================\n")
-
+            
             # Print the results of the function
             if n == lower or n == upper:
                 print(f'{n} is a Fibonacci number\n')
@@ -223,6 +267,9 @@ def main():
                 print(f'The Fibonacci number immediately lower than {n} is {upper}.')
                 print(f'The Fibonacci number immediately higher than {n} is {lower}.\n')
         
+        #____________________________________________________________________________________________________
+        # ERROR CASE: Invalid input from the user
+        #____________________________________________________________________________________________________
         # Anticipate the user entering an invalid input
         else:
             clear()
