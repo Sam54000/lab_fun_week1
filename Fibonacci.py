@@ -1,6 +1,8 @@
 #!/usr/bin/env -S  python  #
 # -*- coding: utf-8 -*-
-#
+#====================================================================================================
+# LICENCE INFORMATION
+#====================================================================================================
 # Samuel Louviot, PhD 
 #
 # MIT License
@@ -24,6 +26,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+#====================================================================================================
+# PROGRAM DESCRIPTION
+#====================================================================================================
 """
 This program is a simple implementation of the Fibonacci sequence.
 It can be used to find the nth Fibonacci number or the closest Fibonacci number to a given number.
@@ -46,7 +51,7 @@ import time
 from os import name, system
 
 #====================================================================================================
-# IMPORT CUSTOM MODULES AND PACKAGES
+# IMPORT CUSTOM MODULES AND PACKAGES WITH INSTALLATION INSTRUCTIONS
 #====================================================================================================
 import numpy as np # pip install numpy or conda install numpy
 
@@ -54,20 +59,24 @@ import numpy as np # pip install numpy or conda install numpy
 # FUNCTIONS DEFINITIONS
 #====================================================================================================
 
-# Define a clear function for the terminal prompt
+# Define a function to clear the terminal prompt as a function of the OS
 def clear():
-    """ Clears the terminal screen to avoid
-    clutter and confusion.
-    This make easier for people to follows instructions.
-    The command instruciton depend on the OS. So it is important 
+    """ Clears the terminal screen. 
+    
+    Generally when a lot of informations is displayed on the terminal
+    and when user input is required, the user can be confused and the 
+    task can be a little bit more cognitively demanding.
+    To avoid clutter and confusion it is necessary to clean the prompt
+    for each required user input. This make easier for people to follows instructions.
+    The command instruction depend on the OS. So it is important 
     to check the OS before running the command by using the os.name module.
     """
  
-    # If user is on Windows
+    # If code is running on Windows
     if name == 'nt':
         _ = system('cls')
  
-    # If user is on Mac or Linux
+    # If code is running on Mac or Linux
     else:
         _ = system('clear')
         
@@ -110,6 +119,12 @@ def get_fibonacci(n):
 
 def find_n(a):
     """ Finds the closest Fibonacci number to a given number and its lower and upper Fibonacci numbers.
+    
+    First we need to find the rank of the closest Fibonacci number to a. Of course it will not be an integer.
+    Based on the Euler-Binet formula, we can find the rank of the closest Fibonacci number to a by using the
+    logarithmic function. Secondly, knowing n we can then round the result to get the rank 
+    of the closest Fibonacci number to a.
+    
 
     Args:
         a (int): The number to find the closest Fibonacci number to.
@@ -139,6 +154,7 @@ def find_n(a):
 
 def main():
     a = ""
+
     # Loop to make sure the user enters a valid input (either 1 or 2)
     while a not in ['1', '2', '3']:
         clear()
@@ -155,9 +171,9 @@ def main():
             
             # Run the function through the speed test
             times = []
+
             for i in range(10000):
                 start = time.time()
-
                 get_fibonacci(n)
                 end = time.time()
                 times.append(end - start)
@@ -205,7 +221,7 @@ def main():
             else:
                 print(f'The closest number to {n} in the Fibonacci sequence is {F}.')
                 print(f'The Fibonacci number immediately lower than {n} is {upper}.')
-                print(f'The Fibonacci number immediately higher than {n} is {lower}.')
+                print(f'The Fibonacci number immediately higher than {n} is {lower}.\n')
         
         # Anticipate the user entering an invalid input
         else:
