@@ -8,4 +8,8 @@ This is the submission for the weekly coding challenge.
 Download the code in a folder. Then open your terminal and enter
 
 1. `cd myfolder`. Replace the name `myfolder` by the name of the folder you just created.
-2. run `python Fibonacci.py` and follow the instruction.
+2. run
+``` bash
+python Fibonacci.py
+```
+and follow the instruction.
