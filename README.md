@@ -28,3 +28,20 @@ When developing software, it's vital for the programmer to prioritize code reada
 python Fibonacci.py
 ```
 5. Follow the instruction.
+
+## Output
+The program will give: 
+* The average time and its standard deviation to run the specific function (ran 10000 times)
+* The maximum memory usage
+
+The output is in this form:
+```
+================================================================
+ELAPSED TIME:
+MEAN:1.2439966201782226e-06 +/- 7.882864856002769e-07 SECONDS
+MAX MEMORY USAGE:
+/Users/samuel/Desktop/Fibonacci.py:116: size=92 B, count=3, average=31 B
+================================================================
+
+The 5 10 and 100th Fibonacci numbers are 5 55 and 354224848179263111168.
+```
